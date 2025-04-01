@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bunalti Archive</title>
-</head>
-<body>
-    <h1>Bunalti Archive Project</h1>
-    <p>Welcome to the archive site.</p>
-</body>
-</html>
+{% extends "base.html" %} <!-- Inherits from base.html -->
+
+{% block content %} <!-- Fills the content block defined in base.html -->
+<div class="px-4 py-5 my-5 text-center">
+    <!-- Hero section -->
+    <h1 class="display-5 fw-bold text-body-emphasis">Bunalti Archive</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Enter your old Bunalti username below to find your comments and participated threads.</p>
+        <!-- Search form, points to the /search route -->
+        <form action="{{ url_for('main.search') }}" method="GET" class="d-flex justify-content-center">
+            <input type="text" name="username" class="form-control me-2" placeholder="Your old username..." required style="max-width: 300px;">
+            <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Find My Comments</button>
+        </form>
+    </div>
+</div>
+
+<hr class="my-5"> <!-- Separator -->
+
+<!-- Section to display top users -->
+<h2 class="text-center mb-4">Most Active Users</h2>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+    <!-- Loop through top_users passed from the route -->
+    {% for user in top_users %}
+    <div class="col">
+        <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <!-- Link to the user's profile page -->
+                    <a href="{{ url_for('main.user_profile', username=user.username) }}" class="text-decoration-none">{{ user.username }}</a>
+                </h5>
+                <p class="card-text">
+                    <small class="text-muted">{{ user.total_comments }} comments</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Display if no users are found -->
+    <div class="col-12">
+        <p class="text-center text-muted">No user statistics found yet.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} <!-- End of content block -->

@@ -1,0 +1,60 @@
+{% extends "base.html" %} <!-- Inherits from base.html -->
+
+{% block content %} <!-- Fills the content block -->
+<div class="container mt-4">
+    <!-- User Stats Card -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h2 class="my-0">Profile: {{ user_stats.username }}</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">User Statistics</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Total Comments:</strong>
+                    <span class="badge bg-primary rounded-pill">{{ user_stats.total_comments }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Threads Participated In:</strong>
+                    <span class="badge bg-secondary rounded-pill">{{ user_stats.threads_participated }}</span>
+                </li>
+                <li class="list-group-item">
+                    <strong>First Comment Around:</strong> {{ user_stats.first_comment_date if user_stats.first_comment_date else 'N/A' }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Last Comment Around:</strong> {{ user_stats.last_comment_date if user_stats.last_comment_date else 'N/A' }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Threads List -->
+    <h3 class="mb-3">Threads Participated In</h3>
+    <div class="list-group shadow-sm">
+        <!-- Loop through threads passed from the route -->
+        {% for post, comment_count in threads %}
+        <!-- Each item links to the thread view, passing username for highlighting -->
+        <a href="{{ url_for('main.thread_view', post_id=post.id, highlight_user=user_stats.username) }}"
+           class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <!-- Post title, truncated if too long -->
+                <h5 class="mb-1">{{ post.title | truncate(80, True) }}</h5>
+                <!-- Post timestamp (consider formatting this better later) -->
+                <small class="text-muted">{{ post.timestamp }}</small>
+            </div>
+            <!-- Show part of the original URL if available -->
+            <p class="mb-1 text-muted">
+                <small>Orig. URL: {{ post.original_url | truncate(60, True) if post.original_url else 'N/A' }}</small>
+            </p>
+            <!-- Indicate how many comments this user made in this thread -->
+            <small>{{ comment_count }} comment(s) by {{ user_stats.username }} in this thread.</small>
+        </a>
+        {% else %}
+        <!-- Display if the user hasn't participated in any threads -->
+        <div class="list-group-item">
+            <p class="mb-0 text-muted">No threads found where this user participated.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} <!-- End of content block -->
