@@ -1,0 +1,16 @@
+# Environment variables
+.env
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+*.venv/
+env/
+*.env/
+
+# Temporary data files from import script
+*_temp.csv
+consolidated_data.jsonl
