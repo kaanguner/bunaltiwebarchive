@@ -1,0 +1,10 @@
+// static/scss/main.scss
+
+// 1. Import your custom variables first
+@import "custom_variables"; // Assumes _custom_variables.scss is in the same folder
+
+// 2. Import Bootstrap's core Sass files
+//    Adjust the path based on how you installed Bootstrap (e.g., npm)
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+// 3. (Optional) Add any other custom rules *after* Bootstrap import

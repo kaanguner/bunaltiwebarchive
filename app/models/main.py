@@ -1,6 +1,8 @@
 # app/views/main.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from sqlalchemy import func, desc # Import desc for ordering
+from sqlalchemy import or_ # Import 'or_' for case-insensitive search if needed, though ILIKE handles it
+
 
 # Import models needed for these routes
 # Assuming your models are correctly defined in these files within app/models/
@@ -119,3 +121,41 @@ def thread_view(post_id):
                            post=post,        # Pass the Post object
                            comments=comments,  # Pass the list of Comment objects
                            highlight_user=highlight_user) # Pass the username to highlight
+
+@bp.route('/search/threads')
+def thread_search():
+    """Handles searching for posts based on title keywords."""
+    query = request.args.get('q', '').strip() # Get search query from 'q' parameter
+
+    if not query:
+        flash('Please enter keywords to search for in thread titles.', 'warning')
+        return redirect(url_for('main.index')) # Redirect if query is empty
+
+    print(f"Searching for threads with title containing: '{query}'") # For debugging
+
+    try:
+        # Perform a case-insensitive search using ILIKE
+        search_term = f"%{query}%" # Add wildcards for substring matching
+        # Find posts where the title contains the query term
+        results = Post.query.filter(
+            Post.title.ilike(search_term)
+        ).order_by(
+            desc(Post.timestamp) # Order by timestamp descending (newest first)
+        ).limit(100).all() # Limit results to avoid overwhelming page
+        # Consider adding pagination later if results can be very large
+
+        result_count = len(results)
+        print(f"Found {result_count} matching posts.") # For debugging
+
+    except Exception as e:
+        print(f"Error during thread search for '{query}': {e}")
+        flash("An error occurred while searching for threads.", "danger")
+        results = []
+        result_count = 0
+
+    # Render a new template to display results
+    return render_template('search_results.html',
+                           title=f"Search Results for '{query}'",
+                           query=query,
+                           results=results,
+                           result_count=result_count)

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Search Results</h1>
+
+    <div class="alert alert-secondary" role="alert">
+        Found <strong>{{ result_count }}</strong> thread(s) matching: <strong>"{{ query }}"</strong>
+    </div>
+
+    {% if results %}
+    <div class="list-group shadow-sm">
+        {% for post in results %}
+        <a href="{{ url_for('main.thread_view', post_id=post.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <!-- Post title -->
+                <h5 class="mb-1">{{ post.title | truncate(100, True) }}</h5>
+                <!-- Post timestamp -->
+                <small class="text-muted">{{ post.timestamp }}</small>
+            </div>
+            <!-- Show part of the original URL if available -->
+            <p class="mb-1 text-muted">
+                <small>Orig. URL: {{ post.original_url | truncate(80, True) if post.original_url else 'N/A' }}</small>
+            </p>
+             <!-- Optional: Add comment count if easily available or needed -->
+             <!-- <small>{{ post.comments | length }} comments</small> -->
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        No threads found matching your query. Try different keywords.
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">« Back to Home</a>
+    </div>
+
+</div> {# End Container #}
+{% endblock %}

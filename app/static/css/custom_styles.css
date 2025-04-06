@@ -1,0 +1,97 @@
+/* /app/static/css/custom_styles.css */
+
+/* --- Navbar Fix --- */
+/* Ensure navbar brand text is visible on dark background */
+.navbar-dark .navbar-brand {
+    color: #f8f9fa; /* Use Bootstrap's light color or simply 'white' */
+}
+.navbar-dark .navbar-brand:hover,
+.navbar-dark .navbar-brand:focus {
+   color: white;
+}
+
+/* --- Card Header Fix --- */
+/* Ensure heading text in dark card headers is visible */
+.card-header.bg-dark h1,
+.card-header.bg-dark h2,
+.card-header.bg-dark h3,
+.card-header.bg-dark h4,
+.card-header.bg-dark h5,
+.card-header.bg-dark h6 {
+    color: #f8f9fa; /* Use Bootstrap's light color, or 'white' */
+}
+
+/* --- Typography Refinements --- */
+/* --- Specific Fixes --- */ /* <<< ADD THIS SECTION */
+
+/* Ensure strong tags within list groups use the base font, not heading font */
+.list-group-item strong {
+  font-family: var(--bs-font-sans-serif); /* Use Bootstrap's variable for base sans-serif font */
+  font-weight: 700; /* Ensure it stays bold (adjust weight if Lato 700 wasn't imported/used) */
+}
+/* Add subtle letter spacing to headings using the serif font */
+h1, h2, h3, h4, h5, h6, .navbar-brand, .card-title {
+    letter-spacing: 0.5px; /* Adjust as needed */
+  }
+
+
+  /* Ensure code blocks use a suitable monospace font */
+  code, kbd, pre, samp {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.9em; /* Slightly smaller */
+  }
+
+  /* --- Link Styling --- */
+
+  a {
+    text-decoration-thickness: 1px; /* Slightly thinner default underline */
+    text-underline-offset: 3px;    /* More space between text and underline */
+    transition: color 0.15s ease-in-out, text-decoration-color 0.15s ease-in-out; /* Smooth transition */
+  }
+
+  /* Make link underline slightly more prominent on hover */
+  a:hover {
+    /* text-decoration-color: var(--bs-link-hover-color); */ /* Underline matches hover color */
+    /* text-decoration-thickness: 2px; */ /* Optional: Thicker underline on hover */
+  }
+
+  /* --- Component Enhancements --- */
+
+  /* Add a subtle lift/shadow effect on hover for interactive list items/cards */
+  .list-group-item-action:hover,
+  .card:hover {
+    /* transform: translateY(-2px); */ /* Optional subtle lift */
+    box-shadow: var(--bs-box-shadow-sm); /* Use Bootstrap's small shadow variable on hover */
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+
+  /* Tone down the primary background for highlighted comments */
+  /* Corrected: Replaced Sass mix() with standard CSS hex codes */
+  .list-group-item-primary {
+    background-color: #D9E3E9 !important; /* Approx mix(white, #4A7C9B, 85%) */
+    border-color: #B3C7D3 !important;   /* Approx mix(white, #4A7C9B, 70%) */
+    color: var(--bs-primary-text-emphasis); /* Keep text readable - Uses BS CSS variable */
+  }
+  /* This rule for links within the highlighted item is fine */
+  .list-group-item-primary strong a {
+       color: var(--bs-primary-text-emphasis); /* Ensure link inside is readable */
+  }
+
+
+  /* --- Other Adjustments --- */
+
+  /* Example: Style blockquotes if you use them */
+  /* Corrected: Replaced Sass variable with standard CSS 'em' unit */
+  blockquote {
+    font-size: 1.1em; /* 1.1 times the parent element's font size */
+    font-style: italic;
+    border-left: 4px solid var(--bs-gray-300); /* Lighter border - Uses BS CSS variable */
+    padding-left: 1.5rem;
+    color: var(--bs-gray-700); /* Uses BS CSS variable */
+  }
+
+  /* This rule for blockquote footer is fine */
+  blockquote footer {
+      color: var(--bs-gray-600); /* Uses BS CSS variable */
+      font-size: var(--bs-font-size-sm); /* Uses BS CSS variable */
+  }
