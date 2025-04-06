@@ -85,7 +85,3 @@ $list-group-item-padding-x: 1.25rem;
 // Navbar adjustments
 $navbar-padding-y: .75rem;
 $navbar-brand-font-size: $font-size-base * 1.5;
-
-// --- !!! IMPORTANT !!! ---
-// These variables override Bootstrap defaults *before* Bootstrap is imported
-// in your main.scss file.
