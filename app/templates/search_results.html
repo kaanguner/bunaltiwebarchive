@@ -1,41 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">Search Results</h1>
+<div class="mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h4 mb-0">Search Results</h1>
+        <span class="badge bg-secondary">{{ result_count }}</span>
+    </div>
 
-    <div class="alert alert-secondary" role="alert">
+    <div class="alert alert-light py-2 small mb-3">
         Found <strong>{{ result_count }}</strong> thread(s) matching: <strong>"{{ query }}"</strong>
     </div>
 
     {% if results %}
-    <div class="list-group shadow-sm">
+    <div class="list-group">
         {% for post in results %}
-        <a href="{{ url_for('main.thread_view', post_id=post.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-                <!-- Post title -->
-                <h5 class="mb-1">{{ post.title | truncate(100, True) }}</h5>
-                <!-- Post timestamp -->
+        <a href="{{ url_for('main.thread_view', post_id=post.id) }}" class="list-group-item list-group-item-action p-2 mb-1">
+            <div class="d-flex justify-content-between mb-1">
+                <h4 class="h6 mb-0">{{ post.title | truncate(70, True) }}</h4>
                 <small class="text-muted">{{ post.timestamp }}</small>
             </div>
             <!-- Show part of the original URL if available -->
-            <p class="mb-1 text-muted">
-                <small>Orig. URL: {{ post.original_url | truncate(80, True) if post.original_url else 'N/A' }}</small>
-            </p>
-             <!-- Optional: Add comment count if easily available or needed -->
-             <!-- <small>{{ post.comments | length }} comments</small> -->
+            <div class="text-muted small">
+                {% if post.original_url %}
+                <i class="fas fa-link me-1"></i> {{ post.original_url | truncate(60, True) }}
+                {% endif %}
+            </div>
         </a>
         {% endfor %}
     </div>
     {% else %}
-    <div class="alert alert-warning" role="alert">
-        No threads found matching your query. Try different keywords.
+    <div class="alert alert-warning py-2" role="alert">
+        <i class="fas fa-exclamation-circle me-1"></i>
+        <small>No threads found matching your query. Try different keywords.</small>
     </div>
     {% endif %}
 
-    <div class="mt-4">
-        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">« Back to Home</a>
+    <div class="mt-3">
+        <a href="{{ url_for('main.index') }}" class="btn btn-sm btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Home
+        </a>
     </div>
-
-</div> {# End Container #}
-{% endblock %}

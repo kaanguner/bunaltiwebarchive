@@ -7,4 +7,34 @@
 //    Adjust the path based on how you installed Bootstrap (e.g., npm)
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
-// 3. (Optional) Add any other custom rules *after* Bootstrap import
+// 3. Optional additional customization after Bootstrap import
+// These will override Bootstrap after it's imported
+
+// Add some global spacing improvements
+html {
+  scroll-behavior: smooth;
+}
+
+// Better focus styles for accessibility
+:focus {
+  outline: 3px solid rgba(74, 124, 155, 0.3);
+  outline-offset: 2px;
+}
+
+// Improved transitions for all interactive elements
+.btn,
+.card,
+.nav-link,
+.navbar-brand,
+.form-control,
+.list-group-item-action {
+  transition: all 0.2s ease-in-out;
+}
+
+// Enhance root element contrast ratios with CSS Variables
+:root {
+  --bs-primary-rgb: 74, 124, 155;
+  --bs-link-hover-color-rgb: 0, 76, 159;
+  --bs-body-font-weight: 400;
+  --bs-heading-color: #1a1a1a;
+}

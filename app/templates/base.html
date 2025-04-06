@@ -4,68 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Fonts: Lato (400, 700) & Playfair Display (700) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-    <!-- Link to YOUR compiled custom Bootstrap -->
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
-
-    <!-- Link to your custom CSS overrides -->
     <link href="{{ url_for('static', filename='css/custom_styles.css') }}" rel="stylesheet">
 
-    <!-- Page specific title, defaults to 'Bunalti Archive' -->
-    <title>{{ title | default('Bunalti Archive') }} - Bunalti Archive</title>
+    <title>{{ title | default('Bunalti Archive') }} - Bunalti Nostalgia</title>
     <style>
-        /* Keep base layout styles here if needed, but font styles moved to CSS files */
         body {
-            padding-top: 5rem; /* Adjust content below fixed navbar */
+            padding-top: 4rem;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
         main {
-            flex: 1; /* Allows main content to fill available space */
+            flex: 1;
         }
         .footer {
-            background-color: #f8f9fa; /* Light background for footer */
-            padding: 1rem 0;
-            margin-top: auto; /* Pushes footer to the bottom */
+            margin-top: auto;
+            padding: 1.5rem 0;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .navbar {
+            background-color: #212529 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 0.75rem 0;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .form-control {
+            border-radius: 0.5rem 0 0 0.5rem;
+            border: 1px solid #ced4da;
+        }
+        .btn-search {
+            border-radius: 0 0.5rem 0.5rem 0;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-left: 0;
+            color: #212529;
+        }
+        .btn-outline-secondary {
+            border-radius: 0.5rem;
+        }
+        /* Thread list styling */
+        .thread-item:hover {
+            background-color: rgba(0,0,0,0.01);
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <!-- Navbar brand will inherit heading font via Sass/CSS -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">Bunalti Nostalgia</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" aria-current="page" href="{{ url_for('main.index') }}">Home</a>
+                        <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}">Home</a>
                     </li>
                 </ul>
                 <form class="d-flex" action="{{ url_for('main.search') }}" method="GET">
-                    <input class="form-control me-2" type="search" placeholder="Enter Username" aria-label="Search" name="username" required>
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <input class="form-control" type="search" placeholder="Enter Username" aria-label="Search" name="username" required>
+                    <button class="btn btn-search" type="submit">Search</button>
                 </form>
             </div>
         </div>
     </nav>
 
-    <main class="container mt-4 mb-4">
+    <main class="mb-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
+                <div class="container mt-3">
                 {% for category, message in messages %}
                     <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
 
@@ -78,7 +102,6 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JavaScript Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     {% block scripts %}{% endblock %}
 </body>

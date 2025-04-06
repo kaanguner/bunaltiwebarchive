@@ -14,31 +14,31 @@
     </div>
 </div>
 
-<hr class="my-5"> <!-- Separator -->
-
-<!-- Section to display top users -->
-<h2 class="text-center mb-4">Most Active Users</h2>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
-    <!-- Loop through top_users passed from the route -->
-    {% for user in top_users %}
-    <div class="col">
-        <div class="card h-100 text-center shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <!-- Link to the user's profile page -->
-                    <a href="{{ url_for('main.user_profile', username=user.username) }}" class="text-decoration-none">{{ user.username }}</a>
-                </h5>
-                <p class="card-text">
-                    <small class="text-muted">{{ user.total_comments }} comments</small>
-                </p>
+<!-- Most Active Users section -->
+<div class="py-5 bg-light rounded-4">
+    <h2 class="text-center mb-4">Most Active Users</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+        <!-- Loop through top_users passed from the route -->
+        {% for user in top_users %}
+        <div class="col">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <!-- Link to the user's profile page -->
+                        <a href="{{ url_for('main.user_profile', username=user.username) }}" class="text-decoration-none">{{ user.username }}</a>
+                    </h5>
+                    <p class="card-text">
+                        <span class="badge bg-primary rounded-pill">{{ user.total_comments }} comments</span>
+                    </p>
+                </div>
             </div>
         </div>
+        {% else %}
+        <!-- Display if no users are found -->
+        <div class="col-12">
+            <p class="text-center text-muted">No user statistics found yet.</p>
+        </div>
+        {% endfor %}
     </div>
-    {% else %}
-    <!-- Display if no users are found -->
-    <div class="col-12">
-        <p class="text-center text-muted">No user statistics found yet.</p>
-    </div>
-    {% endfor %}
 </div>
 {% endblock %} <!-- End of content block -->
