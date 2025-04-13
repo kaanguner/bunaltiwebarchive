@@ -23,18 +23,44 @@ bp = Blueprint('main', __name__, template_folder='../templates')
 
 @bp.route('/')
 def index():
-    """Renders the homepage."""
+    """Renders the homepage with top users and top threads."""
+    top_users = []
+    top_threads = []
+    LIST_LIMIT = 25 # Define the limit for both lists
+
     try:
-        # Query top users based on comment count
-        top_users = UserStats.query.order_by(UserStats.total_comments.desc()).limit(10).all()
+        # Query top users based on comment count - LIMIT to 25
+        top_users = UserStats.query.order_by(UserStats.total_comments.desc()).limit(LIST_LIMIT).all()
     except Exception as e:
-        # Log the error and show an empty list if the query fails
         print(f"Error fetching top users: {e}")
         flash("Could not retrieve user statistics at the moment.", "warning")
-        top_users = []
+        # top_users remains []
 
-    # Render the index.html template, passing the title and users
-    return render_template('index.html', title='Home', top_users=top_users)
+    try:
+        # Query top threads based on comment count - LIMIT to 25
+        top_threads = db.session.query(
+                Post,
+                func.count(Comment.id).label('comment_count') # Count comments
+            ).join(Comment, Post.id == Comment.post_id)\
+            .group_by(Post.id)\
+            .order_by(desc('comment_count'))\
+            .limit(LIST_LIMIT)\
+            .all() # Fetch all matching threads
+            # Note: Depending on your SQL dialect and strictness, you might need
+            # to add all non-aggregated Post columns to group_by:
+            # .group_by(Post.id, Post.title, Post.timestamp, Post.wayback_url, Post.original_url)
+
+    except Exception as e:
+        print(f"Error fetching top threads: {e}")
+        flash("Could not retrieve most discussed threads at the moment.", "warning")
+        # top_threads remains []
+
+
+    # Render the index.html template, passing the title, users, and threads
+    return render_template('index.html',
+                           title='Home',
+                           top_users=top_users,
+                           top_threads=top_threads)
 
 @bp.route('/search')
 def search():
